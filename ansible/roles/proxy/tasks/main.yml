@@ -1,0 +1,11 @@
+
+- name: Launch proxy container
+  community.docker.docker_container:
+    name: proxy
+    image: darfilalabdou/tp-devops-httpd
+    state: started
+    restart_policy: unless-stopped
+    networks:
+      - name: app-network
+    ports:
+      - "80:80"

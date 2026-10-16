@@ -1,0 +1,57 @@
+#SPDX-License-Identifier: MIT-0
+# tasks file for roles/docker
+---
+# Install Docker prerequisites
+- name: Install required packages
+  apt:
+    name:
+      - ca-certificates
+      - curl
+      - gnupg
+      - python3-venv
+    state: present
+    update_cache: yes
+
+# Add Docker GPG key
+- name: Add Docker GPG key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+# Add Docker repository
+- name: Add Docker APT repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_facts['distribution_release'] }} stable"
+    state: present
+    update_cache: yes
+
+# Install Docker
+- name: Install Docker
+  apt:
+    name: docker-ce
+    state: present
+
+# Install Python and pip
+- name: Install Python3 and pip3
+  apt:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+# Create Python virtual environment
+- name: Create Docker SDK virtual environment
+  command: python3 -m venv /opt/docker_venv
+  args:
+    creates: /opt/docker_venv
+
+# Install Docker SDK
+- name: Install Docker SDK for Python
+  command: /opt/docker_venv/bin/pip install docker
+
+# Start Docker
+- name: Ensure Docker is running
+  service:
+    name: docker
+    state: started
+    enabled: yes

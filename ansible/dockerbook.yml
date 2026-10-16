@@ -1,0 +1,13 @@
+
+---
+- name: Deploy application stack
+  hosts: all
+  become: true
+  gather_facts: true
+
+  roles:
+    - docker
+    - network
+    - database
+    - app
+    - proxy
