@@ -4,4 +4,4 @@ all:
    ansible_ssh_private_key_file: /home/Darfilal/id_rsa
  children:
    prod:
-     hosts: cbenard.takima.school
+     hosts: abdou-samad.darfilal.takima.school
